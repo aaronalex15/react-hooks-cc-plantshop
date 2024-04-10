@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from "react";
 import PlantCard from "./PlantCard"
 
-function PlantList() {
-
-  const [listings, setListings] = useState([])  
+function PlantList({query, plantList, setPlantListings}) { 
 
   useEffect(() => {
     fetch("http://localhost:6001/plants")
     .then((r) => r.json())
-    .then((data) => setListings(data))
+    .then((data) => setPlantListings(data))
   }, [ ])
 
-    const plantCards = listings.map(({id, name, image, price}) => {
+const filteredList = plantList.filter((plant) => {
+return plant.name.toLowerCase().includes(query.toLowerCase())
+})
+
+    const plantCards = filteredList.map(({id, name, image, price}) => {
       return (
       <PlantCard 
       key={id}
